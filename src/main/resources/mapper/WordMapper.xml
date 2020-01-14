@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="github.com.bobgit.study.pinyin.dao.WordMapper">
+  <resultMap id="BaseResultMap" type="github.com.bobgit.study.pinyin.model.Word">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="oldword" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pinyin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="radicals" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="strokes" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="word" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="yin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="syllable" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="headl_vowel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tail_vowel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tone" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="github.com.bobgit.study.pinyin.model.WordWithBLOBs">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="oldword" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pinyin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="radicals" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="strokes" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="word" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="yin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="syllable" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="headl_vowel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tail_vowel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="explanation" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="more" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, oldword, pinyin, radicals, strokes, word, yin, syllable, headl_vowel, tail_vowel, 
+    tone
+  </sql>
+  <sql id="Blob_Column_List">
+    explanation, more
+  </sql>
+
+
+
+
+
+
+
+  <!-- 根据条件查询列表 -->
+  <select id="listWord" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultMap="BaseResultMap">
+    select t.* from word t
+    <where>
+      <if test="oldword != null">
+        and t.oldword = #{oldword}
+      </if>
+      <if test="pinyin != null">
+        and t.pinyin = #{pinyin}
+      </if>
+      <if test="radicals != null">
+        and t.radicals = #{radicals}
+      </if>
+      <if test="strokes != null">
+        and t.strokes = #{strokes}
+      </if>
+      <if test="word != null">
+        and t.word = #{word}
+      </if>
+      <if test="yin != null">
+        and t.yin = #{yin}
+      </if>
+      <if test="syllable != null">
+        and t.syllable = #{syllable}
+      </if>
+      <if test="headlVowel != null">
+        and t.headl_vowel = #{headlVowel}
+      </if>
+      <if test="tailVowel != null">
+        and t.tail_vowel = #{tailVowel}
+      </if>
+      <if test="tone != null">
+        and t.tone = #{tone}
+      </if>
+    </where>
+    <choose>
+      <when test="sort!=null and order!=null">
+        order by ${sort} ${order},t.gmt_create desc
+      </when>
+      <otherwise>
+        order by t.gmt_create desc
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="start!=null and size!=null">
+        limit #{start},#{size}
+      </when>
+      <when test="start==null and size!=null">
+        limit #{size}
+      </when>
+    </choose>
+  </select>
+
+  <!-- 根据条件查询列表 总和 -->
+  <select id="listWordCount" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultType="Integer">
+    select count(t.id) from word t
+    <where>
+      <if test="oldword != null">
+        and t.oldword = #{oldword}
+      </if>
+      <if test="pinyin != null">
+        and t.pinyin = #{pinyin}
+      </if>
+      <if test="radicals != null">
+        and t.radicals = #{radicals}
+      </if>
+      <if test="strokes != null">
+        and t.strokes = #{strokes}
+      </if>
+      <if test="word != null">
+        and t.word = #{word}
+      </if>
+      <if test="yin != null">
+        and t.yin = #{yin}
+      </if>
+      <if test="syllable != null">
+        and t.syllable = #{syllable}
+      </if>
+      <if test="headlVowel != null">
+        and t.headl_vowel = #{headlVowel}
+      </if>
+      <if test="tailVowel != null">
+        and t.tail_vowel = #{tailVowel}
+      </if>
+      <if test="tone != null">
+        and t.tone = #{tone}
+      </if>
+    </where>
+  </select>
+
+
+
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from word
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from word
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="github.com.bobgit.study.pinyin.model.WordWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into word (oldword, pinyin, radicals, 
+      strokes, word, yin, 
+      syllable, headl_vowel, tail_vowel, 
+      tone, explanation, more
+      )
+    values (#{oldword,jdbcType=VARCHAR}, #{pinyin,jdbcType=VARCHAR}, #{radicals,jdbcType=VARCHAR}, 
+      #{strokes,jdbcType=VARCHAR}, #{word,jdbcType=VARCHAR}, #{yin,jdbcType=VARCHAR}, 
+      #{syllable,jdbcType=VARCHAR}, #{headlVowel,jdbcType=VARCHAR}, #{tailVowel,jdbcType=VARCHAR}, 
+      #{tone,jdbcType=VARCHAR}, #{explanation,jdbcType=LONGVARCHAR}, #{more,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="github.com.bobgit.study.pinyin.model.WordWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into word
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oldword != null">
+        oldword,
+      </if>
+      <if test="pinyin != null">
+        pinyin,
+      </if>
+      <if test="radicals != null">
+        radicals,
+      </if>
+      <if test="strokes != null">
+        strokes,
+      </if>
+      <if test="word != null">
+        word,
+      </if>
+      <if test="yin != null">
+        yin,
+      </if>
+      <if test="syllable != null">
+        syllable,
+      </if>
+      <if test="headlVowel != null">
+        headl_vowel,
+      </if>
+      <if test="tailVowel != null">
+        tail_vowel,
+      </if>
+      <if test="tone != null">
+        tone,
+      </if>
+      <if test="explanation != null">
+        explanation,
+      </if>
+      <if test="more != null">
+        more,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oldword != null">
+        #{oldword,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyin != null">
+        #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="radicals != null">
+        #{radicals,jdbcType=VARCHAR},
+      </if>
+      <if test="strokes != null">
+        #{strokes,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null">
+        #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="yin != null">
+        #{yin,jdbcType=VARCHAR},
+      </if>
+      <if test="syllable != null">
+        #{syllable,jdbcType=VARCHAR},
+      </if>
+      <if test="headlVowel != null">
+        #{headlVowel,jdbcType=VARCHAR},
+      </if>
+      <if test="tailVowel != null">
+        #{tailVowel,jdbcType=VARCHAR},
+      </if>
+      <if test="tone != null">
+        #{tone,jdbcType=VARCHAR},
+      </if>
+      <if test="explanation != null">
+        #{explanation,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="more != null">
+        #{more,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="github.com.bobgit.study.pinyin.model.WordWithBLOBs">
+    update word
+    <set>
+      <if test="oldword != null">
+        oldword = #{oldword,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyin != null">
+        pinyin = #{pinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="radicals != null">
+        radicals = #{radicals,jdbcType=VARCHAR},
+      </if>
+      <if test="strokes != null">
+        strokes = #{strokes,jdbcType=VARCHAR},
+      </if>
+      <if test="word != null">
+        word = #{word,jdbcType=VARCHAR},
+      </if>
+      <if test="yin != null">
+        yin = #{yin,jdbcType=VARCHAR},
+      </if>
+      <if test="syllable != null">
+        syllable = #{syllable,jdbcType=VARCHAR},
+      </if>
+      <if test="headlVowel != null">
+        headl_vowel = #{headlVowel,jdbcType=VARCHAR},
+      </if>
+      <if test="tailVowel != null">
+        tail_vowel = #{tailVowel,jdbcType=VARCHAR},
+      </if>
+      <if test="tone != null">
+        tone = #{tone,jdbcType=VARCHAR},
+      </if>
+      <if test="explanation != null">
+        explanation = #{explanation,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="more != null">
+        more = #{more,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="github.com.bobgit.study.pinyin.model.WordWithBLOBs">
+    update word
+    set oldword = #{oldword,jdbcType=VARCHAR},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      radicals = #{radicals,jdbcType=VARCHAR},
+      strokes = #{strokes,jdbcType=VARCHAR},
+      word = #{word,jdbcType=VARCHAR},
+      yin = #{yin,jdbcType=VARCHAR},
+      syllable = #{syllable,jdbcType=VARCHAR},
+      headl_vowel = #{headlVowel,jdbcType=VARCHAR},
+      tail_vowel = #{tailVowel,jdbcType=VARCHAR},
+      tone = #{tone,jdbcType=VARCHAR},
+      explanation = #{explanation,jdbcType=LONGVARCHAR},
+      more = #{more,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="github.com.bobgit.study.pinyin.model.Word">
+    update word
+    set oldword = #{oldword,jdbcType=VARCHAR},
+      pinyin = #{pinyin,jdbcType=VARCHAR},
+      radicals = #{radicals,jdbcType=VARCHAR},
+      strokes = #{strokes,jdbcType=VARCHAR},
+      word = #{word,jdbcType=VARCHAR},
+      yin = #{yin,jdbcType=VARCHAR},
+      syllable = #{syllable,jdbcType=VARCHAR},
+      headl_vowel = #{headlVowel,jdbcType=VARCHAR},
+      tail_vowel = #{tailVowel,jdbcType=VARCHAR},
+      tone = #{tone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

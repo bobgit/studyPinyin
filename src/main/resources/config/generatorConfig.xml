@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<properties resource="config/generatorConfig.properties" />
+    <!--数据库驱动-->
+    <classPathEntry    location="${jdbc_driverPath}"/>
+    <context id="DB2Tables"    targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+        <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+        <property name="suppressAllComments" value="true"/>
+    </commentGenerator>
+    <!--数据库链接地址账号密码-->
+        <jdbcConnection driverClass="${jdbc_driverClassName}" connectionURL="${jdbc_url}" userId="${jdbc_username}" password="${jdbc_password}">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!--生成Model类存放位置-->
+        <javaModelGenerator targetPackage="${modelPackage}" targetProject="${modelPackagePath}">
+            <!--该属性只对MyBatis3有效，如果true就会使用构造方法入参-->
+            <property name="constructorBased" value="true"/>
+            <!--如果true，MBG会根据catalog和schema来生成子包。如果false就会直接用targetPackage属性。-->
+            <property name="enableSubPackages" value="false"/>
+            <!--该属性用来配置实体类属性是否可变，如果设置为true，那么constructorBased不管设置成什么，都会使用构造方法入参，并且不会生成setter方法。如果为false，实体类属性就可以改变。-->
+            <property name="immutable" value="false"/>
+            <!--设置所有实体类的基类。如果设置，需要使用类的全限定名称。-->
+            <property name="rootClass" value="${rootClass}"/>
+            <!--是否对数据库查询结果进行trim操作，如果设置为true就会生成类似这样public void setUsername(String username) {this.username = username == null ? null : username.trim();}的setter方法。-->
+            <property name="trimStrings" value="false"/>
+        </javaModelGenerator>
+        <!--生成映射文件存放位置-->
+        <sqlMapGenerator targetPackage="${xmlMappingPackage}" targetProject="${xmlMappingPackagePath}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!--生成Dao类存放位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${daoMapperPackage}" targetProject="${daoMapperPackagePath}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="exampleMethodVisibility" value="true"/>
+            <property name="methodNameCalculator" value="true"/>
+            <property name="useLegacyBuilder" value="true"/>
+        </javaClientGenerator>
+        <!--生成对应表及类名-->
+
+
+        <!--生成对应表及类名-->
+        <!--
+
+
+        <table tableName="t_department_catalog" domainObjectName="DepartmentCatalog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+
+        <table tableName="t_drug" domainObjectName="Drug" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="t_hospital_images" domainObjectName="HospitalImages" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        <table tableName="t_hospital_level" domainObjectName="HospitalLevel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+        <table tableName="t_pharmacist_title" domainObjectName="PharmacistTitle" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+    
+        <table tableName="t_provinces" domainObjectName="Provinces" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        <table tableName="t_remind" domainObjectName="Remind" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="t_remind_time" domainObjectName="RemindTime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+         <table tableName="p_system_parameters" domainObjectName="SystemParameters" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+         <table tableName="t_news" domainObjectName="News" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        
+
+
+
+
+        
+        <table tableName="t_doctor_evaluation" domainObjectName="DoctorEvaluation" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="t_feedback" domainObjectName="Feedback" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="t_device_info" domainObjectName="DeviceInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        
+         <table tableName="t_system_parameters" domainObjectName="SystemParameters" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+        
+        
+  
+        
+        
+
+        
+
+         <table tableName="t_sms_code" domainObjectName="SmsCode" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        
+        
+
+         <table tableName="t_attention_user" domainObjectName="AttentionUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+        
+        <table tableName="t_device_exception" domainObjectName="DeviceInfoException" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+        <table tableName="t_chat_state" domainObjectName="ChatState" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+               
+
+
+        <table tableName="t_pharmacist_evaluation" domainObjectName="PharmacistEvaluation" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        
+         <table tableName="t_practice_work_time" domainObjectName="PracticeWorkTime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        <table tableName="t_practice_point" domainObjectName="DoctorPracticePoint" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        
+        <table tableName="t_content_detail" domainObjectName="ContentDetail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        
+
+        
+
+        <table tableName="t_images" domainObjectName="Images" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+        <table tableName="t_task_schedule" domainObjectName="TaskSchedule" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>        
+        
+
+        
+        
+         <table tableName="t_department_catalog" domainObjectName="DepartmentCatalog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        
+
+         <table tableName="t_drug_call" domainObjectName="DrugCall" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+         <table tableName="t_drug_call_task" domainObjectName="DrugCallTask" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+         <table tableName="t_api_around" domainObjectName="ApiAround" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+         <table tableName="t_user_role" domainObjectName="UserRole" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>  
+        
+         <table tableName="t_role" domainObjectName="Role" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>      
+        
+        
+
+
+         <table tableName="t_app_config" domainObjectName="AppConfig" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+        
+
+
+
+
+        
+ 
+        
+ 
+
+ 
+
+
+
+       <table tableName="t_reward_punishment_log" domainObjectName="RewardPunishmentLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+ 
+        
+   
+        
+
+
+    
+        
+
+
+        
+       <table tableName="t_redis_log" domainObjectName="RedisLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        
+        
+       <table tableName="t_doctor_disease" domainObjectName="DoctorDisease" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+        <table tableName="t_provinces" domainObjectName="Provinces" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="t_cities" domainObjectName="Cities" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        <table tableName="t_areas" domainObjectName="Areas" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        
+
+
+        
+
+        
+         <table tableName="t_user_address" domainObjectName="UserAddress" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="lat" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>        
+        
+
+
+   
+           
+         <table tableName="t_drug_accept_prescription" domainObjectName="DrugAcceptPrescription" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+          
+         <table tableName="t_drug_take_prescription" domainObjectName="DrugTakePrescription" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        
+        
+
+        
+
+
+  
+         <table tableName="t_drug_send_order" domainObjectName="DrugSendOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+                        
+         <table tableName="t_drug_accept_order" domainObjectName="DrugAcceptOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>      
+        
+
+        <table tableName="t_biz_order" domainObjectName="BizOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+       <table tableName="t_medical_log" domainObjectName="MedicalLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+       <table tableName="t_user_wallet" domainObjectName="UserWallet" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+       <table tableName="t_user_wallet_serial" domainObjectName="UserWalletSerial" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        
+
+
+
+
+        <table tableName="t_drug_stock" domainObjectName="DrugStock" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+
+        <table tableName="t_drug_disease" domainObjectName="DrugDisease" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        <table tableName="t_drug_department" domainObjectName="DrugDepartment" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        <table tableName="t_department_disease" domainObjectName="DepartmentDisease" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        
+       <table tableName="t_disease_code" domainObjectName="DiseaseCode" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+
+        <table tableName="t_drug" domainObjectName="Drug" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>     
+
+        
+        <table tableName="t_drug_response" domainObjectName="DrugResponse" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+
+        
+         <table tableName="t_drug_take_order" domainObjectName="DrugTakeOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>        
+        
+        
+   
+         <table tableName="t_pharmacy" domainObjectName="Pharmacy" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="lat" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>   
+        
+        
+       <table tableName="tn_nurse" domainObjectName="Nurse" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+        
+                                                                  
+         <table tableName="t_appeal_info" domainObjectName="AppealInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+   
+
+        
+         <table tableName="t_pharmacy" domainObjectName="Pharmacy" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="lat" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>  
+
+
+        <table tableName="t_drug" domainObjectName="Drug" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        
+        
+
+       <table tableName="tn_nurse_event" domainObjectName="NurseEvent" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+       <table tableName="tn_nurse_refuse" domainObjectName="NurseRefuse" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+        
+
+       <table tableName="tn_contacts" domainObjectName="Contacts" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+       </table> 
+       
+
+        
+        
+
+        <table tableName="t_chat_date" domainObjectName="ChatDate" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+
+
+
+        
+
+
+         <table tableName="t_order_drugs" domainObjectName="OrderDrugs" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+
+
+         <table tableName="t_chat_record" domainObjectName="ChatRecord" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        
+
+
+
+       <table tableName="t_work_time" domainObjectName="WorkTime" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+
+
+
+
+
+         <table tableName="t_medical_date" domainObjectName="MedicalDate" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        
+  
+        <table tableName="t_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+ 
+        
+
+        
+
+        
+        <table tableName="t_medical_prescription" domainObjectName="MedicalPrescription" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+
+
+        <table tableName="t_medical_order" domainObjectName="MedicalOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="patient_lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="patient_lat" javaType="java.lang.Double" jdbcType="DECIMAL" />             
+            <columnOverride column="doctor_lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="doctor_lat" javaType="java.lang.Double" jdbcType="DECIMAL" />      
+            <columnOverride column="doctor_leave_lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="doctor_leave_lat" javaType="java.lang.Double" jdbcType="DECIMAL" />                   
+        </table>      
+        
+  
+
+       <table tableName="t_template" domainObjectName="Template" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>  
+ 
+
+    
+
+
+
+        
+
+         <table tableName="t_user_hospital" domainObjectName="UserHospital" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+        
+         <table tableName="t_group" domainObjectName="Group" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>  
+
+         <table tableName="t_audit_info" domainObjectName="AuditInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        
+         <table tableName="t_user_group" domainObjectName="UserGroup" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+         	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+        
+         <table tableName="t_hospital_set" domainObjectName="HospitalSet" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+         	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+                   
+         <table tableName="t_hospital_group" domainObjectName="HospitalGroup" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>      
+        
+        
+         <table tableName="t_blood_pressure" domainObjectName="BloodPressure" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+         <table tableName="t_doctor" domainObjectName="Doctor" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="visit" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>
+        
+        <table tableName="t_pharmacist" domainObjectName="Pharmacist" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="visit" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>    
+
+
+        <table tableName="t_threshold" domainObjectName="Threshold" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>     
+         <table tableName="t_hospital" domainObjectName="Hospital" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="lat" javaType="java.lang.Double" jdbcType="DECIMAL" />
+        </table>  
+        <table tableName="t_chat_order" domainObjectName="ChatOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        <table tableName="t_weight" domainObjectName="Weight" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+        <table tableName="t_body_3d" domainObjectName="Body3d" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>     
+                             
+        <table tableName="t_blood_sugar" domainObjectName="BloodSugar" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+ 
+         <table tableName="t_doctor_order_drugs" domainObjectName="DoctorOrderDrugs" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        <table tableName="t_patient" domainObjectName="Patient" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+
+         <table tableName="t_person_demand" domainObjectName="PersonDemand" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+ 
+
+
+        <table tableName="t_caboc" domainObjectName="Caboc" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+        <table tableName="t_health_record" domainObjectName="HealthRecord" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+        
+        <table tableName="t_store" domainObjectName="Store" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>     
+        
+
+        
+        <table tableName="t_epayment_trade" domainObjectName="EpaymentTrade" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+        <table tableName="t_gene_check" domainObjectName="GeneCheck" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table> 
+        
+        <table tableName="t_pulse" domainObjectName="Pulse" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>         
+   
+        <table tableName="t_activity_order" domainObjectName="ActivityOrder" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>    
+        <table tableName="t_message_user" domainObjectName="MessageUser" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>   
+        
+        
+
+        <table tableName="t_news" domainObjectName="News" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>        
+        <table tableName="t_messages" domainObjectName="Messages" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="t_messages_person" domainObjectName="MessagesPerson" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+
+        <table tableName="t_abdomen" domainObjectName="Abdomen" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>     
+        <table tableName="t_water" domainObjectName="Water" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>     
+        <table tableName="t_urine" domainObjectName="Urine" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        
+        
+        
+        <table tableName="t_test_id" domainObjectName="TestId" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>  
+        <table tableName="t_test_code" domainObjectName="TestCode" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>    
+
+        <table tableName="t_activity" domainObjectName="Activity" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride column="lng" javaType="java.lang.Double" jdbcType="DECIMAL" />
+            <columnOverride column="lat" javaType="java.lang.Double" jdbcType="DECIMAL" />            
+        </table> 
+
+
+   -->
+
+        <table tableName="word" domainObjectName="Word" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+
+
+
+
+    </context>
+</generatorConfiguration>
