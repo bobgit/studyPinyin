@@ -1,9 +1,9 @@
 
 # http协议端口 server是https协议端口
 http:
-  port: 8081
+  port: 8881
 server:
-  port: 6061
+  port: 6661
   servlet:
     context-path: /
   tomcat:
@@ -23,8 +23,6 @@ spring:
 #    active: other
   main:
     banner-mode: "OFF"
-  resources:
-    static-locations: classpath:/resources/,classpath:/static/
 
   datasource:
     url: jdbc:mysql://192.168.201.43:6036/medical_db?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=Shanghai
@@ -33,20 +31,35 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
-
 logging:
 #  pattern:
 #    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
   level:
     root: info
     # logging.level.mapper类所在包位置=debug mybatis打印sql语句
-#    com.yier.platform.dao: info
+    github.com.bobgit.study.pinyin.dao: debug
+#    github.com.bobgit.study.pinyin.interceptor: info
     org:
       springframework:
         security: info
         web: info
 
-
+#范围路径 比如：/admin
+adminPath:
+interceptor:
+  # 后台管理记录拦截器
+  enabled: true
+  addPathPatterns: >
+    ${adminPath}/**
+  excludePathPatterns: >
+    ${adminPath}/patient,
+    ${adminPath}/rongCloud/**,
+    ${adminPath}/desktop,
+    ${adminPath}/sys/online/count,
+    ${adminPath}/**/treeData,
+    ${adminPath}/file/**,
+    ${adminPath}/tags/*,
+    ${adminPath}/msg/**
 
 
 
