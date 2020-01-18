@@ -87,19 +87,15 @@ log.info("params:{}",params);
         String sone2 = "áéíóúǘ";
         String sone3 = "ăĕĭŏŭǚ";
         String sone4 = "àèìòùǜ";
-        String vowela = "āáăàa";
-        String vowele = "ēéĕèe";
-        String voweli = "īíĭìi";
-        String vowelo = "ōóŏòo";
-        String vowelu = "ūúŭùuǖǘǚǜü";
         List<String> sone1List = stringToListString(sone1);
         List<String> sone2List = stringToListString(sone2);
         List<String> sone3List = stringToListString(sone3);
         List<String> sone4List = stringToListString(sone4);
         List<Word> list = wordService.listWord(params);
-        log.info("list:{}",list);
+//        log.info("list:{}",list);
         res.setData(list);
         list.forEach(t->{
+            log.info("初始情况:{}",t);
             String pinyin = t.getPinyin();
             log.info("pinyin:{}",pinyin);
             List<String> pinyinList = stringToListString(pinyin);
@@ -138,9 +134,70 @@ log.info("params:{}",params);
                     }
                 }
             }
+            t.setYin(pingyinRemove(pinyin));
+            log.info("目前情况:{}",t);
 
         });
         return res;
+    }
+
+    public String pingyinRemove(String pinyinwithSone){
+        List<String> pinyinList = stringToListString(pinyinwithSone);
+        String vowela = "āáăàa";
+        String vowele = "ēéĕèe";
+        String voweli = "īíĭìi";
+        String vowelo = "ōóŏòo";
+        String vowelu = "ūúŭùuǖǘǚǜü";
+        List<String> vowelaList = stringToListString(vowela);
+        List<String> voweleList = stringToListString(vowele);
+        List<String> voweliList = stringToListString(voweli);
+        List<String> voweloList = stringToListString(vowelo);
+        List<String> voweluList = stringToListString(vowelu);
+        String replaceString = "";
+        String replaceWith = "";
+        List<String> collectsoneaList = pinyinList.stream().filter(num -> vowelaList.contains(num)).collect(Collectors.toList());
+        if(collectsoneaList.size()>0){
+            log.info("-----------------：{}",collectsoneaList);
+            replaceString = collectsoneaList.get(0);
+            replaceWith = "a";
+        }
+        else{
+            List<String> collectsoneeList = pinyinList.stream().filter(num -> voweleList.contains(num)).collect(Collectors.toList());
+            if(collectsoneeList.size()>0){
+                log.info("-----------------：{}",collectsoneeList);
+                replaceString = collectsoneeList.get(0);
+                replaceWith = "e";
+            }
+            else{
+                List<String> collectsoneiList = pinyinList.stream().filter(num -> voweliList.contains(num)).collect(Collectors.toList());
+                if(collectsoneiList.size()>0){
+                    log.info("-----------------：{}",collectsoneiList);
+                    replaceString = collectsoneiList.get(0);
+                    replaceWith = "i";
+                }
+                else{
+                    List<String> collectsoneoList = pinyinList.stream().filter(num -> voweloList.contains(num)).collect(Collectors.toList());
+                    if(collectsoneoList.size()>0){
+                        log.info("-----------------：{}",collectsoneoList);
+                        replaceString = collectsoneoList.get(0);
+                        replaceWith = "o";
+                    }
+                    else{
+                        List<String> collectsoneuList = pinyinList.stream().filter(num -> voweluList.contains(num)).collect(Collectors.toList());
+                        if(collectsoneuList.size()>0){
+                            log.info("-----------------：{}",collectsoneuList);
+                            replaceString = collectsoneuList.get(0);
+                            replaceWith = "u";
+                        }
+                        else{
+
+                        }
+                    }
+                }
+            }
+        }
+
+        return pinyinwithSone.replace(replaceString,replaceWith);
     }
 
     public List<String> stringToListString(String str){
