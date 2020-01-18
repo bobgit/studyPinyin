@@ -84,10 +84,10 @@
     </where>
     <choose>
       <when test="sort!=null and order!=null">
-        order by ${sort} ${order},t.gmt_create desc
+        order by ${sort} ${order},t.id
       </when>
       <otherwise>
-        order by t.gmt_create desc
+        order by t.id
       </otherwise>
     </choose>
     <choose>
