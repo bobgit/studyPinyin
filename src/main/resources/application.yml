@@ -14,21 +14,86 @@ server:
     key-store-type: PKCS12
     key-alias: tomcat
     enabled: true #开启https协议端口
-debug: false #开启调试模式与否
+debug: true #开启调试模式与否
 
 spring:
   application:
       name: springStudyPinYin
-#  profiles:
-#    active: other
+  profiles:
+    active: dev
   main:
     banner-mode: "OFF"
 
+#  jmx:
+#    enabled: false # default:true Registering beans for JMX exposure on startup
+
   datasource:
-    url: jdbc:mysql://192.168.201.43:6036/bob?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
-    username: root                                      #数据库用户名
-    password: Ggkj_1688                                    #数据库密码
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+#    username: root                                      #数据库用户名
+#    password: root                                    #数据库密码
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      one:  #数据源1
+        url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+        username: root                                      #数据库用户名
+        password: root                                    #数据库密码
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+
+      two: #数据源2
+        url: jdbc:mysql://localhost:3306/medical?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+        username: root                                      #数据库用户名
+        password: root                                    #数据库密码
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+      three: #数据源3
+        url: jdbc:mysql://localhost:3306/mysql?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+        username: root                                      #数据库用户名
+        password: root                                    #数据库密码
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+#      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+#      username: root                                      #数据库用户名
+#      password: root                                    #数据库密码
+#      url: jdbc:mysql://192.168.201.43:6036/bob?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&useJDBCCompliantTimezoneShift=false&useLegacyDatetimeCode=true&serverTimezone=GMT%2B8
+#      username: root                                      #数据库用户名
+#      password: Ggkj_1688
+      db-type: com.alibaba.druid.pool.DruidDataSource     #数据源类型启用Druid
+      driver-class-name: com.mysql.jdbc.Driver #com.mysql.cj.jdbc.Driver            #驱动 JDBC连接Mysql5需用com.mysql.jdbc.Driver  JDBC连接Mysql6需用com.mysql.cj.jdbc.Driver，同时需要指定时区serverTimezone
+      filters: stat                                       #属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat日志用的filter:log4j防御sql注入的filter:wall
+      max-active: 20                                      #最大连接池数量maxPoolSize
+      initial-size: 1                                     #初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      max-wait: 60000                                     #获取连接时最大等待时间，单位毫秒
+      min-idle: 1                                         #最小连接池数量minPoolSize
+      time-between-eviction-runs-millis: 60000            #1) Destroy线程会检测连接的间隔时间2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'                        #用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。
+      test-while-idle: true                               #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-on-return: false                               #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      test-on-borrow: false                               #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      pool-prepared-statements: false                     #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      max-open-prepared-statements: 20                    #要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      stat-view-servlet:
+        enabled: true
+        url-pattern: "/druid/*"         #形如：http://192.168.0.199:8808/druid/sql.html 用户名及密码都为admin就可查看 内置监控页面 这个不受限制 http://127.0.0.1:8801/druid/login.html
+        login-username: admin
+        login-password: admin
+        allow:          #允许所有IP访问解决you are not permitted to view this page
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      filter:
+        stat:
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 2000
+
+
+
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
