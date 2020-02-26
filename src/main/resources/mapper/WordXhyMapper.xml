@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="github.com.bobgit.study.pinyin.dao.WordXhyMapper">
+  <resultMap id="BaseResultMap" type="github.com.bobgit.study.pinyin.model.WordXhy">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="answer" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="riddle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, answer, riddle, remark
+  </sql>
+
+
+
+
+
+
+  <!-- 根据条件查询列表 -->
+  <select id="listWordXhy" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultMap="BaseResultMap">
+    select t.* from word_xhy t
+    <where>
+      <if test="word != null">
+        and t.answer like #{word}
+      </if>
+      <if test="word != null">
+        and t.riddle like #{oldword}
+      </if>
+    </where>
+    <choose>
+      <when test="sort!=null and order!=null">
+        order by ${sort} ${order},t.id
+      </when>
+      <otherwise>
+        order by t.id
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="start!=null and size!=null">
+        limit #{start},#{size}
+      </when>
+      <when test="start==null and size!=null">
+        limit #{size}
+      </when>
+    </choose>
+  </select>
+
+  <!-- 根据条件查询列表 总和 -->
+  <select id="listWordXhyCount" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultType="Integer">
+    select count(t.id) from word_xhy t
+    <where>
+      <if test="word != null">
+        and t.answer like #{word}
+      </if>
+      <if test="word != null">
+        and t.riddle like #{oldword}
+      </if>
+    </where>
+  </select>
+
+
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from word_xhy
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from word_xhy
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="github.com.bobgit.study.pinyin.model.WordXhy">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into word_xhy (answer, riddle, remark
+      )
+    values (#{answer,jdbcType=VARCHAR}, #{riddle,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="github.com.bobgit.study.pinyin.model.WordXhy">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into word_xhy
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="answer != null">
+        answer,
+      </if>
+      <if test="riddle != null">
+        riddle,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="answer != null">
+        #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="riddle != null">
+        #{riddle,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="github.com.bobgit.study.pinyin.model.WordXhy">
+    update word_xhy
+    <set>
+      <if test="answer != null">
+        answer = #{answer,jdbcType=VARCHAR},
+      </if>
+      <if test="riddle != null">
+        riddle = #{riddle,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="github.com.bobgit.study.pinyin.model.WordXhy">
+    update word_xhy
+    set answer = #{answer,jdbcType=VARCHAR},
+      riddle = #{riddle,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

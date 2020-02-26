@@ -2,8 +2,8 @@ package github.com.bobgit.study.pinyin.service;
 
 import com.google.common.collect.Lists;
 import github.com.bobgit.study.pinyin.dao.WordMapper;
-import github.com.bobgit.study.pinyin.model.Word;
-import github.com.bobgit.study.pinyin.model.WordWithBLOBs;
+import github.com.bobgit.study.pinyin.model.*;
+import github.com.bobgit.study.pinyin.po.ShowWord;
 import github.com.bobgit.study.pinyin.requestParam.WordRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +20,44 @@ public class WordService {
     private final Logger log = LoggerFactory.getLogger(WordService.class);
     @Autowired
     private WordMapper wordMapper;
+
+    @Autowired
+    private WordCiService wordCiService;
+    @Autowired
+    private WordIdiomService wordIdiomService;
+    @Autowired
+    private WordXhyService wordXhyService;
+
+
+    public List<ShowWord> query(WordRequest params){
+        List<WordWithBLOBs> listWord = this.listWord(params);
+        List<ShowWord> showWordList = Lists.newArrayList();
+        StringBuilder sb = new StringBuilder();
+        listWord.forEach(w->{
+            String word = w.getWord();
+            WordRequest request = new WordRequest();
+            request.setWord("%"+word);
+
+            List<String> wordCi = Lists.newArrayList();
+            List<String> wordIdiom = Lists.newArrayList();
+            List<String> wordXhy = Lists.newArrayList();
+            for (WordCi item: wordCiService.listWordCi(request)) {
+                wordCi.add(item.getCi());
+            }
+            for (WordIdiom item: wordIdiomService.listWordIdiom(request)) {
+                wordIdiom.add(item.getWord());
+            }
+            request.setOldword("%"+word);
+            for (WordXhy item: wordXhyService.listWordXhy(request)) {
+                wordXhy.add(item.getRiddle()+"-"+item.getAnswer());
+            }                   ;
+            if(wordCi.size()>0 || wordIdiom.size()>0 || wordXhy.size()>0){
+                showWordList.add(new ShowWord(w).setWordCi(wordCi).setWordIdiom(wordIdiom).setWordXhy(wordXhy));
+                sb.append(w.getWord());
+            }
+        });
+        return showWordList;
+    }
 
     @Transactional
     public void dowithAllDB(){

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 区县信息
+ * 字词信息
  */
 @Repository
 public interface WordMapper {

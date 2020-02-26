@@ -51,16 +51,9 @@ public class WordController {
     @RequestMapping(value = "/query", method = {RequestMethod.POST})
     public ListResponse<ShowWord> query(HttpServletRequest request, HttpServletResponse response,@ApiParam(value = "请求接口") @RequestBody WordRequest params) {
         ListResponse<ShowWord> res = new ListResponse<>();
-        List<WordWithBLOBs> listWord = wordService.listWord(params);
-        List<ShowWord> showWordList = Lists.newArrayList();
-        StringBuilder sb = new StringBuilder();
-        listWord.forEach(w->{
-            showWordList.add(new ShowWord(w));
-            sb.append(w.getWord());
-        });
-        res.setData(showWordList);
-        res.setTotal(showWordList.size());
-        res.setOtherInfo(sb.toString());
+        List<ShowWord> list =  wordService.query(params);
+        res.setData(list);
+        res.setTotal(list.size());
         return res;
     }
 
