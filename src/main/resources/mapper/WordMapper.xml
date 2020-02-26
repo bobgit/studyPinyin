@@ -48,7 +48,7 @@
 
 
   <!-- 根据条件查询列表 -->
-  <select id="listWord" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultMap="BaseResultMap">
+  <select id="listWord" parameterType="github.com.bobgit.study.pinyin.requestParam.WordRequest" resultMap="ResultMapWithBLOBs">
     select t.* from word t
     <where>
       <if test="oldword != null">

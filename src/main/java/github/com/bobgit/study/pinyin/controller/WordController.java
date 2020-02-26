@@ -7,6 +7,8 @@ import github.com.bobgit.study.pinyin.common.CommonResponse;
 import github.com.bobgit.study.pinyin.common.ListResponse;
 import github.com.bobgit.study.pinyin.datasource.DynamicDataSource;
 import github.com.bobgit.study.pinyin.model.Word;
+import github.com.bobgit.study.pinyin.model.WordWithBLOBs;
+import github.com.bobgit.study.pinyin.po.ShowWord;
 import github.com.bobgit.study.pinyin.requestParam.WordRequest;
 import github.com.bobgit.study.pinyin.service.WordService;
 import io.swagger.annotations.ApiModel;
@@ -44,9 +46,27 @@ public class WordController {
     @Autowired
     private WordService wordService;
 
+
+    @ApiOperation(value = "晨皓要求 查询押韵的接口，只用输入韵母就可以获取一堆字")
+    @RequestMapping(value = "/query", method = {RequestMethod.POST})
+    public ListResponse<ShowWord> query(HttpServletRequest request, HttpServletResponse response,@ApiParam(value = "请求接口") @RequestBody WordRequest params) {
+        ListResponse<ShowWord> res = new ListResponse<>();
+        List<WordWithBLOBs> listWord = wordService.listWord(params);
+        List<ShowWord> showWordList = Lists.newArrayList();
+        StringBuilder sb = new StringBuilder();
+        listWord.forEach(w->{
+            showWordList.add(new ShowWord(w));
+            sb.append(w.getWord());
+        });
+        res.setData(showWordList);
+        res.setTotal(showWordList.size());
+        res.setOtherInfo(sb.toString());
+        return res;
+    }
+
     @ApiOperation(value = "retainAll")
     @RequestMapping(value = "/retainAll", method = {RequestMethod.POST})
-    public ListResponse<Word> retainAll(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "请求接口") @RequestBody WordRequest params, @ApiParam(value = "数据源 ONE TWO THREE")@RequestParam(value = "type", required = false, defaultValue = "ONE") String type) {
+    public ListResponse<WordWithBLOBs> retainAll(HttpServletRequest request, HttpServletResponse response, @ApiParam(value = "请求接口") @RequestBody WordRequest params, @ApiParam(value = "数据源 ONE TWO THREE")@RequestParam(value = "type", required = false, defaultValue = "ONE") String type) {
         DynamicDataSource.setDataSource(type);
 
 
@@ -78,7 +98,7 @@ public class WordController {
         log.info("并集  去重:{}",collect4);
 
 
-        ListResponse<Word> res = new ListResponse<Word>();
+        ListResponse<WordWithBLOBs> res = new ListResponse<>();
 params.setStart(0);
 params.setSize(10);
 log.info("输入参数params:{}",params);
@@ -102,12 +122,9 @@ log.info("输入参数params:{}",params);
 
         int listCount = wordService.listWordCount(new WordRequest());
         log.info("总数有--------------->：{}",listCount);
-        for(int index=0;index<listCount;index++){
-
-        }
 
 
-        List<Word> list = wordService.listWord(params);
+        List<WordWithBLOBs> list = wordService.listWord(params);
 //        log.info("list:{}",list);
         res.setData(list);
         list.forEach(t->{
@@ -258,7 +275,13 @@ log.info("输入参数params:{}",params);
         return charListString;
     }
 
-
+    @ApiOperation(value = "dowithAllDB")
+    @RequestMapping(value = "/dowithAllDB", method = {RequestMethod.GET})
+    public CommonResponse<String> dowithAllDB(HttpServletRequest request, HttpServletResponse response,@RequestParam(value = "file", required = false, defaultValue = "社会主义核心价值观") String file) {
+        CommonResponse<String> res = new CommonResponse<String>();
+        wordService.dowithAllDB();
+        return res;
+    }
 
     @ApiOperation(value = "pinyin")
     @RequestMapping(value = "/pinyin", method = {RequestMethod.GET})

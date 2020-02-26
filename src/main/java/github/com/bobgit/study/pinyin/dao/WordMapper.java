@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface WordMapper {
     // 根据条件查询列表
-    List<Word> listWord(WordRequest params);
+    List<WordWithBLOBs> listWord(WordRequest params);
     // 根据条件查询列表 总数
     int listWordCount(WordRequest params);
 
