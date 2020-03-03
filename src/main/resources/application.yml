@@ -132,6 +132,67 @@ interceptor:
     ${adminPath}/msg/**
 
 
-
-
-
+#
+## ===========================================================================
+## SchedulerFactoryBean基本配置
+## ===========================================================================
+##启动延迟n秒
+#spring.quartz.startup-delay=1
+##是否重写已存在的job
+#spring.quartz.overwrite-existing-jobs=true
+##是否自动启动
+#spring.quartz.auto-startup=true
+##quartz集群配置
+## ===========================================================================
+## Configure Main Scheduler Properties 调度器属性
+## ===========================================================================
+##调度标识名 集群中每一个实例都必须使用相同的名称
+#spring.quartz.properties.org.quartz.scheduler.instanceName = DefaultQuartzScheduler
+##ID设置为自动获取 每一个必须不同
+#spring.quartz.properties.org.quartz.scheduler.instanceId = AUTO
+#
+##============================================================================
+## Configure ThreadPool
+##============================================================================
+##线程池的实现类（一般使用SimpleThreadPool即可满足几乎所有用户的需求）
+#spring.quartz.properties.org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+##指定线程数，至少为1（无默认值）(一般设置为1-100直接的整数合适)
+#spring.quartz.properties.org.quartz.threadPool.threadCount = 25
+##设置线程的优先级（最大为java.lang.Thread.MAX_PRIORITY 10，最小为Thread.MIN_PRIORITY 1，默认为5）
+#spring.quartz.properties.org.quartz.threadPool.threadPriority = 5
+##============================================================================
+## Configure JobStore
+##============================================================================
+## 触发失败阈值，未超过触发时间60s则直接触发，若超过则失火，log信息Handling 1 trigger(s) that missed their scheduled fire-time.
+#spring.quartz.properties.org.quartz.jobStore.misfireThreshold = 60000
+##数据保存方式为数据库持久化
+#spring.quartz.properties.org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+##数据库代理类，一般org.quartz.impl.jdbcjobstore.StdJDBCDelegate可以满足大部分数据库
+#spring.quartz.properties.org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+##JobDataMaps是否都为String类型
+#spring.quartz.properties.org.quartz.jobStore.useProperties = false
+##表的前缀，默认QRTZ_
+#spring.quartz.properties.org.quartz.jobStore.tablePrefix = QRTZ_
+##是否加入集群
+#spring.quartz.properties.org.quartz.jobStore.isClustered = true
+##调度实例失效的检查时间间隔
+#spring.quartz.properties.org.quartz.jobStore.clusterCheckinInterval = 20000
+##名称必须与下方org.quartz.dataSource.@Name@.xxx一致
+#spring.quartz.properties.org.quartz.jobStore.dataSource = myDS
+##============================================================================
+## Configure Datasources
+##============================================================================
+##数据库引擎
+#spring.quartz.properties.org.quartz.dataSource.myDS.driver = com.mysql.cj.jdbc.Driver
+##数据库连接
+#spring.quartz.properties.org.quartz.dataSource.myDS.URL = jdbc:mysql://xxxxxxxxxx
+##数据库用户
+#spring.quartz.properties.org.quartz.dataSource.myDS.user = root
+##数据库密码
+#spring.quartz.properties.org.quartz.dataSource.myDS.password = xxxxxx
+##允许最大连接
+#spring.quartz.properties.org.quartz.dataSource.myDS.maxConnections = 5
+##验证查询sql,可以不设置
+#spring.quartz.properties.org.quartz.dataSource.myDS.validationQuery=select 0 from dual
+#
+#

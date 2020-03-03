@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="github.com.bobgit.study.pinyin.dao.CronTableMapper">
+  <resultMap id="BaseResultMap" type="github.com.bobgit.study.pinyin.model.CronTable">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cron" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="quarz_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="scheduler_class" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, cron, quarz_name, scheduler_class, time
+  </sql>
+
+
+
+
+
+
+
+
+
+
+  <!-- 根据条件查询列表 -->
+  <select id="listCronTable" parameterType="github.com.bobgit.study.pinyin.requestParam.BaseRequest" resultMap="BaseResultMap">
+    select t.* from cron_table t
+    <where>
+      <if test="searchKey != null">
+        and t.quarz_name like #{searchKey}
+      </if>
+    </where>
+    <choose>
+      <when test="sort!=null and order!=null">
+        order by ${sort} ${order},t.id
+      </when>
+      <otherwise>
+        order by t.id
+      </otherwise>
+    </choose>
+    <choose>
+      <when test="start!=null and size!=null">
+        limit #{start},#{size}
+      </when>
+      <when test="start==null and size!=null">
+        limit #{size}
+      </when>
+    </choose>
+  </select>
+
+  <!-- 根据条件查询列表 总和 -->
+  <select id="listCronTableCount" parameterType="github.com.bobgit.study.pinyin.requestParam.BaseRequest" resultType="Integer">
+    select count(t.id) from cron_table t
+    <where>
+      <if test="searchKey != null">
+        and t.quarz_name like #{searchKey}
+      </if>
+    </where>
+  </select>
+
+
+
+
+
+
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cron_table
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cron_table
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="github.com.bobgit.study.pinyin.model.CronTable">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cron_table (user_id, cron, quarz_name, 
+      scheduler_class, time)
+    values (#{userId,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR}, #{quarzName,jdbcType=VARCHAR}, 
+      #{schedulerClass,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="github.com.bobgit.study.pinyin.model.CronTable">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into cron_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="cron != null">
+        cron,
+      </if>
+      <if test="quarzName != null">
+        quarz_name,
+      </if>
+      <if test="schedulerClass != null">
+        scheduler_class,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="cron != null">
+        #{cron,jdbcType=VARCHAR},
+      </if>
+      <if test="quarzName != null">
+        #{quarzName,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerClass != null">
+        #{schedulerClass,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="github.com.bobgit.study.pinyin.model.CronTable">
+    update cron_table
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="cron != null">
+        cron = #{cron,jdbcType=VARCHAR},
+      </if>
+      <if test="quarzName != null">
+        quarz_name = #{quarzName,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerClass != null">
+        scheduler_class = #{schedulerClass,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="github.com.bobgit.study.pinyin.model.CronTable">
+    update cron_table
+    set user_id = #{userId,jdbcType=VARCHAR},
+      cron = #{cron,jdbcType=VARCHAR},
+      quarz_name = #{quarzName,jdbcType=VARCHAR},
+      scheduler_class = #{schedulerClass,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

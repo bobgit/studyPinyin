@@ -57,7 +57,17 @@
             If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
             -->
         </dependency>
-        <!-- 整合Quartz实现动态配置定时任务 -->
+
+
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+            <version>2.2.5.RELEASE</version>
+        </dependency>
+<!--
+        &lt;!&ndash; 整合Quartz实现动态配置定时任务 &ndash;&gt;
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
@@ -68,12 +78,14 @@
             <artifactId>quartz-jobs</artifactId>
             <version>2.3.2</version>
         </dependency>
-        <!-- 该依赖必加，里面有sping对schedule的支持 -->
+        &lt;!&ndash; 该依赖必加，里面有sping对schedule的支持 &ndash;&gt;
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
             <version>5.2.4.RELEASE</version>
         </dependency>
+
+        -->
         <!-- 可逆向快速生成基础代码，提高开发效率-->
         <dependency>
             <groupId>org.mybatis.generator</groupId>
