@@ -4,8 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
+//由于springboot追求零xml配置，所以下面会以配置Bean的方式来实现
+//QuartzJobBean
 //1、Job  表示一个工作，要执行的具体内容。此接口中只有一个方法 void execute(JobExecutionContext context)
 //@Configuration
 public class SchedledConfiguration {
@@ -14,13 +17,13 @@ public class SchedledConfiguration {
 //可执行的调度程序，Job是这个可执行程调度程序所要执行的内容，另外JobDetail还包含了这个任务调度的方案和策略。
     @Bean(name = "detailFactoryBean")
     public MethodInvokingJobDetailFactoryBean detailFactoryBean(ScheduledTasks scheduledTasks){
-        MethodInvokingJobDetailFactoryBean bean = new MethodInvokingJobDetailFactoryBean ();
+        MethodInvokingJobDetailFactoryBean jobDetail  = new MethodInvokingJobDetailFactoryBean ();
         //这儿设置对应的Job对象
-        bean.setTargetObject (scheduledTasks);
+        jobDetail .setTargetObject (scheduledTasks);
         //这儿设置对应的方法名  与执行具体任务调度类中的方法名对应
-        bean.setTargetMethod ("work");
-        bean.setConcurrent (false);
-        return bean;
+        jobDetail .setTargetMethod ("work");
+        jobDetail .setConcurrent (false);//是否并发执行
+        return jobDetail ;
     }
  //(2)Trigger(CronTriggerFactoryBean)的配置需要JobDetail这个参数.同时需要配置cron表达式,这个下面谈.
     //代表一个调度参数的配置，什么时候去调。
